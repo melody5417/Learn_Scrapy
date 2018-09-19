@@ -13,4 +13,6 @@ class BookItem(Item):
     # name = scrapy.Field()
     name = Field()
     price = Field()
+    authors = Field(serializer=lambda x: '|'.join(x))
     pass
+
