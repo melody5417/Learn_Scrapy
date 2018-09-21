@@ -1,6 +1,7 @@
 # encoding: utf-8
 import scrapy
 from ..items import BookItem
+from scrapy.linkextractors import LinkExtractor
 
 class BooksSpider(scrapy.Spider):
     # 每一个爬虫的唯一标识
@@ -29,10 +30,17 @@ class BooksSpider(scrapy.Spider):
             
             yield book
             
-            # 提取链接
-            # 下一页的url在ul.pager -> li.next -> a里面
-            next_url = response.css('ul.paper li.next a::attr(href)').extract_first()
-            if next_url:
-                # 如果找到下一页的URL，得到绝对路径，构造新的Request对象
-                next_url = response.urljoin(next_url)
+            # # 1. Selector 提取链接
+            # # 下一页的url在ul.pager -> li.next -> a里面
+            # next_url = response.css('ul.paper li.next a::attr(href)').extract_first()
+            # if next_url:
+            #     # 如果找到下一页的URL，得到绝对路径，构造新的Request对象
+            #     next_url = response.urljoin(next_url)
+            #     yield scrapy.Request(next_url, callback=self.parse)
+            
+            # 2. LinkExtractor 提取链接
+            le = LinkExtractor(restrict_css='ul.pager li.next')
+            links = le.extract_links(response)
+            if links:
+                next_url = links[0].url
                 yield scrapy.Request(next_url, callback=self.parse)
