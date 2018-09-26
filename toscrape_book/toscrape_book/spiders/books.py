@@ -12,33 +12,34 @@ class BooksSpider(scrapy.Spider):
     # 书籍列表页面的解析函数
 
     def parse(self, response):
+        self.logger.info('parse function url %s', response.url)
 
-    	# 提取页面中每一个书籍页面的链接，用它们构造Request对象并提交
+        # 提取页面中每一个书籍页面的链接，用它们构造Request对象并提交
 
-    	le = LinkExtractor(restrict_css='article.product_pod h3')
-    	for link in le.extract_links(response):
-    		yield scrapy.Request(link.url, callback=self.parse_book)
+        le = LinkExtractor(restrict_css='article.product_pod h3')
+        for link in le.extract_links(response):
+            yield scrapy.Request(link.url, callback=self.parse_book)
 
 
-    	# 提取页面中下一个书籍列表页面的链接，用其构造Request对象并提交
+        # 提取页面中下一个书籍列表页面的链接，用其构造Request对象并提交
 
-    	le = LinkExtractor(restrict_css='ul.pager li.next')
-    	links = le.extract_links(response)
-    	if links:
-    		next_url = links[0].url
-    		yield scrapy.Request(next_url, callback=self.parse)
+        le = LinkExtractor(restrict_css='ul.pager li.next')
+        links = le.extract_links(response)
+        if links:
+            next_url = links[0].url
+            yield scrapy.Request(next_url, callback=self.parse)
 
     # 书籍页面的解析函数
 
     def parse_book(self, response):
-    	book = BookItem()
-    	sel = response.css('div.product_main')
-    	book['name'] = sel.xpath('./h1/text()').extract_first()
-    	book['price'] = sel.css('p.price_color::text').extract_first()
-    	book['review_rating'] = sel.css('p.star_rating::attr(class)').re_first('star_rating ([A-Za-z]+)')
+        book = BookItem()
+        sel = response.css('div.product_main')
+        book['name'] = sel.xpath('./h1/text()').extract_first()
+        book['price'] = sel.css('p.price_color::text').extract_first()
+        book['review_rating'] = sel.css('p.star_rating::attr(class)').re_first('star_rating ([A-Za-z]+)')
 
-    	sel = response.css('table.table.table-striped')
-    	book['upc'] = sel.xpath('(.//tr[1]/td/text())').extract_first()
-    	book['stock'] = sel.xpath('(.//tr[last()-1]/td/text())').re_first('\((\d+) available\)')
-    	book['review_num'] = sel.xpath('(.//tr[last()]/td/text())').extract_first()
-    	yield book
+        sel = response.css('table.table.table-striped')
+        book['upc'] = sel.xpath('(.//tr[1]/td/text())').extract_first()
+        book['stock'] = sel.xpath('(.//tr[last()-1]/td/text())').re_first('\((\d+) available\)')
+        book['review_num'] = sel.xpath('(.//tr[last()]/td/text())').extract_first()
+        yield book

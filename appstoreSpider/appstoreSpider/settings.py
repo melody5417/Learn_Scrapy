@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for toscrape_book project
+# Scrapy settings for appstoreSpider project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'toscrape_book'
+BOT_NAME = 'appstoreSpider'
 
-SPIDER_MODULES = ['toscrape_book.spiders']
-NEWSPIDER_MODULE = 'toscrape_book.spiders'
+SPIDER_MODULES = ['appstoreSpider.spiders']
+NEWSPIDER_MODULE = 'appstoreSpider.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'toscrape_book (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'toscrape_book.middlewares.ToscrapeBookSpiderMiddleware': 543,
+#    'appstoreSpider.middlewares.AppstorespiderSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'toscrape_book.middlewares.ToscrapeBookDownloaderMiddleware': 543,
+#    'appstoreSpider.middlewares.AppstorespiderDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'toscrape_book.pipelines.BookPipeline': 300,
-}
+#ITEM_PIPELINES = {
+#    'appstoreSpider.pipelines.AppstorespiderPipeline': 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -89,5 +89,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-FEED_EXPORT_FIELDS = ['upc', 'name', 'price', 'stock', 'review_rating', 'review_num']
 LOG_ENABLED = True
+FEED_EXPORT_ENCODING = 'utf-8'
+# 403触发反爬虫机制
+HTTPERROR_ALLOWED_CODES = [403]

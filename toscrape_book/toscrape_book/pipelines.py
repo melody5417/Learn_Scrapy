@@ -7,15 +7,16 @@
 
 
 class BookPipeline(object):
-	review_rating_map = {
-	'One': 1,
-	'Two': 2,
-	'Three': 3,
-	'Four': 4,
-	'Five': 5,
-	}
+    review_rating_map = {
+    'One': 1,
+    'Two': 2,
+    'Three': 3,
+    'Four': 4,
+    'Five': 5,
+    }
+
     def process_item(self, item, spider):
-    	rating = item.get('review_rating')
-    	if rating:
-    		item['review_rating'] = self.review_rating_map[rating]
+        rating = item.get('review_rating')
+        if rating:
+            item['review_rating'] = self.review_rating_map[rating]
         return item
