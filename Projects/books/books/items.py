@@ -13,5 +13,5 @@ class BookItem(Item):
     # name = scrapy.Field()
     name = Field()
     price = Field()
-    pass
+yao    pass
 
