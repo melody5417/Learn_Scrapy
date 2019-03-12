@@ -2,10 +2,12 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="CommandLineInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="MarkdownUnresolvedFileReference" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyAbstractClassInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyArgumentEqualDefaultInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyArgumentListInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyAssignmentToLoopOrWithParameterInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyAsyncCallInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyAttributeOutsideInitInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyAugmentAssignmentInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyBroadExceptionInspection" enabled="true" level="TYPO" enabled_by_default="true" />
@@ -26,6 +28,7 @@
         </value>
       </option>
     </inspection_tool>
+    <inspection_tool class="PyDataclassInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyDecoratorInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyDefaultArgumentInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyDeprecationInspection" enabled="true" level="TYPO" enabled_by_default="true" />
@@ -50,10 +53,12 @@
     <inspection_tool class="PyMissingConstructorInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyMissingOrEmptyDocstringInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyMissingTypeHintsInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyNamedTupleInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyNestedDecoratorsInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyNonAsciiCharInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyNoneFunctionAssignmentInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyOldStyleClassesInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyOverloadsInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="TYPO" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
@@ -66,6 +71,7 @@
     <inspection_tool class="PyPropertyAccessInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyPropertyDefinitionInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyProtectedMemberInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyProtocolInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyRaisingNewStyleClassInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyRedeclarationInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyRedundantParenthesesInspection" enabled="true" level="TYPO" enabled_by_default="true" />
@@ -78,11 +84,15 @@
     <inspection_tool class="PyStatementEffectInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyStringExceptionInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyStringFormatInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyStubPackagesCompatibilityInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PySuperArgumentsInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyTestParametrizedInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyTrailingSemicolonInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyTupleAssignmentBalanceInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyTupleItemAssignmentInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyTypeCheckerInspection" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="PyTypeHintsInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyUnboundLocalVariableInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyUnnecessaryBackslashInspection" enabled="true" level="TYPO" enabled_by_default="true" />
     <inspection_tool class="PyUnreachableCodeInspection" enabled="true" level="TYPO" enabled_by_default="true" />
@@ -91,6 +101,7 @@
       <option name="ignoreTupleUnpacking" value="true" />
       <option name="ignoreLambdaParameters" value="true" />
       <option name="ignoreLoopIterationVariables" value="true" />
+      <option name="ignoreVariablesStartingWithUnderscore" value="true" />
     </inspection_tool>
   </profile>
 </component>
