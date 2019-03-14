@@ -63,8 +63,6 @@ if __name__ == '__main__':
 
     # post
     # 豆瓣登陆
-
-
     # headers 信息，从fiddler上或你的浏览器上可复制下来
     headers = {'Accept': 'text/html,application/xhtml+xml,'
                          'application / xml,'
@@ -82,12 +80,12 @@ if __name__ == '__main__':
                }
     # POST请求的信息，填写你的用户名和密码
     value = {'source': 'index_nav',
-    'form_password': '',
-    'form_email': '@126.com'
+    'password': '',
+    'username': '@126.com'
     }
     try:
         data = urllib.parse.urlencode(value).encode('utf8')
-        response = urllib.request.Request('https://www.douban.com/login', data=data, headers=headers)
+        response = urllib.request.Request('https://accounts.douban.com/passport/login', data=data, headers=headers)
         html = urllib.request.urlopen(response)
         result = html.read().decode('utf8')
         print(result)
