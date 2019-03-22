@@ -9,7 +9,7 @@ Wechat auto reply movies info in real-time mode by crawling douban website
     * sender could select the movie from the movies searched from above operation
     * receiver will response with the specific info of selected movies
 """
-import itchat
+import  itchat
 import douban_crawl
 
 
