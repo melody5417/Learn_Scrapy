@@ -6,6 +6,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36
                          ' (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36'}
 start_url = "https://movie.douban.com/top250"
 
+# 开始爬虫
 def start(url):
     html = get_one_page(url)
     for item in parse_one_page(html):
@@ -34,7 +35,7 @@ def parse_one_page(html):
         yield {
             'serial_number': item[0],
             'movie_name': item[1],
-            'introduce': "".join(item[2].replace('&nbsp;', '').replace('<br>', '\n').split()),
+            'introduce': "".join(item[2].split()).replace('&nbsp;', '').replace('<br>', '\n').replace('\n', ''),
             'star': item[3],
             'evalutate': item[4],
             'describe': item[5]
