@@ -11,19 +11,19 @@ from pymongo import MongoClient
 KEY_WORD = 'iPad'
 MAX_PAGE = 100
 
-host = "10.78.67.60"
+host = "10.78.67.123"
 port = 27017
 MONGO_DB = "taobao"
 MONGO_COLLECTION = "products"
 client = MongoClient(host=host, port=port)
 
-# # 1. Chrome Headless Mode
-# chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_argument("--headless")
-# browser = webdriver.Chrome(chrome_options=chrome_options)
+# 1. Chrome Headless Mode
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--headless")
+browser = webdriver.Chrome(chrome_options=chrome_options)
 
-# 2. Chrome Normal Mode
-browser = webdriver.Chrome()
+# # 2. Chrome Normal Mode
+# browser = webdriver.Chrome()
 
 wait = WebDriverWait(browser, 10)
 
