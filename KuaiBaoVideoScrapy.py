@@ -1,35 +1,38 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 from browsermobproxy import Server
 import pandas as pd
-import time
+import random
 
 # define
+Proxy_Name = "kuaibao"
 PathToExcelFile = "/Users/yiqiwang/Desktop/video_list.xlsx"
 Column_Name = "文章链接"
 PathToBrowsermobProxy = "/Users/yiqiwang/Downloads/browsermob-proxy-2.1.4/bin/browsermob-proxy"
-User_Agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"
+User_Agent = ["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:36.0) Gecko/20100101 Firefox/36.0",
+              "Mozilla/5.0 (X11; Linux i686 on x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2909.25 Safari/537.36"]
 
+# funcs
 
-def initProxy(path):
+def startServer(path):
     server = Server(path=path)
     server.start()
+    return server
+
+def startProxy(server, proxy_name):
     proxy = server.create_proxy()
-    proxy.new_har("kuaibao_monitor", options={'captureHeaders': True, 'captureContent': True})
+    proxy.new_har(proxy_name, options={'captureHeaders': True, 'captureContent': True})
     return proxy
 
-def initDriver(port):
+def startDriver(proxy):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--user-agent={user_agent}'.format(user_agent=User_Agent))
-    chrome_options.add_argument('--proxy-server={host}:{port}'.format(host="localhost", port=port))
+    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--user-agent={user_agent}'.format(user_agent=User_Agent[0]))
+    chrome_options.add_argument('--proxy-server={host}:{port}'.format(host="localhost", port=proxy.port))
     driver = webdriver.Chrome(chrome_options=chrome_options)
     return driver
 
@@ -37,7 +40,7 @@ def readFile(path):
     data_frame = pd.read_excel(PathToExcelFile)
     return data_frame[Column_Name]
 
-def getPage(proxy, driver, h5Url):
+def getPage(proxy, driver, h5Url, new):
     # open page
     print("start scrapying " + h5Url)
     driver.get(h5Url)
@@ -48,7 +51,9 @@ def getPage(proxy, driver, h5Url):
             EC.presence_of_element_located((By.CSS_SELECTOR, "use.txp_svg_symbol.txp_svg_play"))
         )
     except:
-        print("error: " + url)
+        if new:
+            getPage(proxy, driver, h5Url, new=False)
+            print("scrapy error: " + url)
         return
 
     driver.find_element_by_css_selector("use.txp_svg_symbol.txp_svg_play").click()
@@ -56,10 +61,9 @@ def getPage(proxy, driver, h5Url):
     # fetch url
     video_url = ""
     while len(video_url) == 0:
-        result = proxy.har
-
-        # dict_keys(['pageref', 'startedDateTime', 'request', 'response', 'cache', 'timings', 'serverIPAddress', 'comment', 'time'])
-        for entry in result['log']['entries']:
+        entries = proxy.har['log']['entries']
+        reverseEntries = reversed(entries)
+        for entry in reverseEntries:
             if len(video_url) != 0:
                 break
 
@@ -67,20 +71,9 @@ def getPage(proxy, driver, h5Url):
             _rsp = entry['response']
             _headers = _rsp['headers']
 
-            # {'status': 200, 'statusText': 'OK', 'httpVersion': 'HTTP/1.1', 'cookies': [],
-            #  'headers': [{'name': 'Date', 'value': 'Tue, 23 Apr 2019 03:35:29 GMT'},
-            #              {'name': 'Content-Type', 'value': 'application/xml; charset=utf-8'},
-            #              {'name': 'Transfer-Encoding', 'value': 'chunked'}, {'name': 'Connection', 'value': 'keep-alive'},
-            #              {'name': 'Server', 'value': 'openresty'}, {'name': 'X-Powered-By', 'value': 'HHVM/3.7.3-dev'},
-            #              {'name': 'X-Location', 'value': '/'}, {'name': 'X-Client-Ip', 'value': '61.135.172.68'},
-            #              {'name': 'X-Server-Ip', 'value': '125.39.133.120'}],
-            #  'content': {'size': 0, 'mimeType': 'application/xml; charset=utf-8', 'text': '', 'comment': ''},
-            #  'redirectURL': '', 'headersSize': 277, 'bodySize': 0, 'comment': ''}
-
-            # check if content-type is "application/octet-stream"
             for _header in _headers:
                 if _header['name'] == 'Content-Type':
-                    if _header['value'] == 'application/octet-stream':
+                    if (_header['value'] == 'application/octet-stream') or (_header['value'] == 'video/mp4'):
                         if ("mp4" in _url) or ("ugc" in _url):
                             video_url = _url
                             break
@@ -88,8 +81,12 @@ def getPage(proxy, driver, h5Url):
     print(video_url)
 
 if __name__ == '__main__':
-    proxy = initProxy(path=PathToBrowsermobProxy)
-    driver = initDriver(proxy.port)
+    server = startServer(PathToBrowsermobProxy)
     h5Urls = readFile(path=PathToExcelFile)
-    for url in h5Urls[10:21]:
-        getPage(proxy=proxy, driver=driver, h5Url=url)
+    for url in h5Urls[30:121]:
+        proxy = startProxy(server, url)
+        driver = startDriver(proxy)
+        getPage(proxy=proxy, driver=driver, h5Url=url, new=True)
+
+        proxy.close()
+        driver.quit()
